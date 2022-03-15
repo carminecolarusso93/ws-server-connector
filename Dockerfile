@@ -1,7 +1,5 @@
 FROM maven:3.8.4-openjdk-11-slim
 
-RUN ls
-
 COPY src/ /tmp/application/src/
 COPY pom.xml /tmp/application/
 #COPY entrypoint.sh /usr/local
