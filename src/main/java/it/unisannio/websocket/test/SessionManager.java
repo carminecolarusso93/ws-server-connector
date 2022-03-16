@@ -83,10 +83,10 @@ public class SessionManager {
             Matcher matcher = pattern.matcher(message);
             if (matcher.find()) {
                 String area = matcher.group(2);
-                System.out.println("Area: " + area);
                 for (Session session : outPeers) {
                     try {
                         if (subscriptions.get(session.getId()).contains(area))
+                            System.out.println("Area: " + area);
                             session.getBasicRemote().sendText(this.message);
                     } catch (IOException e) {
                         e.printStackTrace();
