@@ -82,8 +82,9 @@ public class SessionManager {
 		public void run() {
 			System.out.println("BroadcastWorker.run");
 			String area = pattern.matcher(message).group(1);
+			System.out.println("area1: " + area );
 			area = area.substring(REGEX_OFFSET, area.length()-1);
-			System.out.println("area: " + area );
+			System.out.println("area2: " + area );
 			for(Session session : outPeers) {
 				try {
 					if(subscriptions.get(session.getId()).contains(area))
