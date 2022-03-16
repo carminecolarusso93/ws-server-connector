@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -19,7 +20,8 @@ public class SessionManager {
 	private final Map<String, Set<String>> subscriptions;
 	
 	private ExecutorService executorServiceIn, executorServiceOut;
-	private static final int POOL_SIZE = 2;
+	private static final int POOL_SIZE_IN = 10;
+	private static final int POOL_SIZE_OUT = 5;
 	private static final Pattern pattern = Pattern.compile("areaName\":\"[0-9a-zA-Z-_]+\"");
 	private static final int REGEX_OFFSET = "areaname\":".length();
 	
@@ -34,9 +36,9 @@ public class SessionManager {
 	private SessionManager() {
 		this.inPeers = Collections.synchronizedSet(new HashSet<Session>());
 		this.outPeers = Collections.synchronizedSet(new HashSet<Session>());
-		this.executorServiceIn = Executors.newFixedThreadPool(POOL_SIZE);
-		this.executorServiceOut = Executors.newFixedThreadPool(POOL_SIZE);
-		this.subscriptions = Collections.synchronizedMap(new HashMap<String, Set<String>>());
+		this.executorServiceIn = Executors.newFixedThreadPool(POOL_SIZE_IN);
+		this.executorServiceOut = Executors.newFixedThreadPool(POOL_SIZE_OUT);
+		this.subscriptions =new ConcurrentHashMap<String, Set<String>>();
 	}
 	
 	public void addSession(Session session, boolean in) {
@@ -72,6 +74,7 @@ public class SessionManager {
 		private String message;
 		
 		public BroadcastWorker(String message) {
+			System.out.println("Create Broadcast worker: message = " +message);
 			this.message = message;
 		}
 		

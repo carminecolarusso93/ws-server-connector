@@ -23,7 +23,7 @@ public class WebsocketServerEndpointIn {
 
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
-    	System.out.println("[" + this.toString() + "]" + "Message received: " + message);
+//    	System.out.println("[" + this.toString() + "]" + "Message received: " + message);
     	manager.broadcast(message);
     }
 
