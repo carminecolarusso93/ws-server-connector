@@ -77,7 +77,8 @@ public class SessionManager {
 		@Override
 		public void run() {
 			String area = pattern.matcher(message).group(1);
-			area.substring(REGEX_OFFSET, area.length()-1);
+			area = area.substring(REGEX_OFFSET, area.length()-1);
+			System.out.println("area: " + area );
 			for(Session session : outPeers) {
 				try {
 					if(subscriptions.get(session.getId()).contains(area))
