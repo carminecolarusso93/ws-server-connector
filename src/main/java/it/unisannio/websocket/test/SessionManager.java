@@ -103,6 +103,7 @@ public class SessionManager {
 		
 		@Override
 		public void run() {
+			System.out.println("adding subscription to :" + this.newSubscritpions.toArray()[0]);
 			subscriptions.put(sessionId, newSubscritpions);
 		}
 		
