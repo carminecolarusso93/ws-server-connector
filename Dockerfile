@@ -1,4 +1,4 @@
-FROM maven:3.8.4-openjdk-11-slim
+FROM maven:3.8.4-openjdk-11
 
 COPY src/ /tmp/application/src/
 COPY pom.xml /tmp/application/

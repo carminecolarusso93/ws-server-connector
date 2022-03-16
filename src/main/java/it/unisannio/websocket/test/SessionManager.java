@@ -80,6 +80,7 @@ public class SessionManager {
 		
 		@Override
 		public void run() {
+			System.out.println("BroadcastWorker.run");
 			String area = pattern.matcher(message).group(1);
 			area = area.substring(REGEX_OFFSET, area.length()-1);
 			System.out.println("area: " + area );
