@@ -87,8 +87,9 @@ public class SessionManager {
                     System.out.println("session.getId() = " + session.getId());
                     try {
                         System.out.println("Subscription: " + subscriptions.get(session.getId()));
+                        System.out.println("Area: " + area);
                         if (subscriptions.get(session.getId()).contains(area))
-                            System.out.println("Area: " + area);
+                            System.out.println("Area checked: " + area);
                             session.getBasicRemote().sendText(this.message);
                     } catch (IOException e) {
                         e.printStackTrace();
