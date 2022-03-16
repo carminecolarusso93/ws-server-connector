@@ -84,7 +84,9 @@ public class SessionManager {
             if (matcher.find()) {
                 String area = matcher.group(2);
                 for (Session session : outPeers) {
+                    System.out.println("session.getId() = " + session.getId());
                     try {
+                        System.out.println("Subscription: " + subscriptions.get(session.getId()));
                         if (subscriptions.get(session.getId()).contains(area))
                             System.out.println("Area: " + area);
                             session.getBasicRemote().sendText(this.message);
