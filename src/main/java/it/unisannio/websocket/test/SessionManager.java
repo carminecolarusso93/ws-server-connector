@@ -59,6 +59,7 @@ public class SessionManager {
 	
 	//TODO: the access could be synchronized
 	public void broadcast(String message) {
+		System.out.println("SessionManager.broadcast: message = " + message);
 		this.executorServiceIn.submit(new BroadcastWorker(message));
 	}
 	
@@ -103,7 +104,7 @@ public class SessionManager {
 		
 		@Override
 		public void run() {
-			System.out.println("adding subscription to :" + this.newSubscritpions.toArray()[0]);
+			System.out.println("Adding subscription to: " + this.newSubscritpions.toArray()[0]);
 			subscriptions.put(sessionId, newSubscritpions);
 		}
 		
