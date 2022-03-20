@@ -23,7 +23,7 @@ public class SessionManager {
     private static final int POOL_SIZE_IN = 10;
     private static final int POOL_SIZE_OUT = 5;
     //	private static final Pattern pattern = Pattern.compile("areaName\":\"[0-9a-zA-Z-_]+\"");
-    private static final Pattern pattern = Pattern.compile("(areaName=)([0-9a-zA-Z-_]++)");
+    private static final Pattern pattern = Pattern.compile("(areaName=)([0-9a-zA-Z-_]+)");
     private static final int REGEX_OFFSET = "areaname\":".length();
 
     private static SessionManager manager = null;
@@ -62,7 +62,7 @@ public class SessionManager {
 
     //TODO: the access could be synchronized
     public void broadcast(String message) {
-        System.out.println("SessionManager.broadcast: message = " + message);
+//        System.out.println("SessionManager.broadcast: message = " + message);
         this.executorServiceIn.submit(new BroadcastWorker(message));
     }
 
@@ -84,12 +84,15 @@ public class SessionManager {
             if (matcher.find()) {
                 String area = matcher.group(2);
                 for (Session session : outPeers) {
-                    System.out.println("session.getId() = " + session.getId());
                     try {
-                        System.out.println("Subscription: " + subscriptions.get(session.getId()));
-                        System.out.println("Area: " + area);
+                        System.out.println("area = " + area + ", session.getId() = " + session.getId());
+                        System.out.println("subscriptions: ");
+                        for (String s : subscriptions.get(session.getId())) {
+                            System.out.print(s + ", ");
+                        }
+                        System.out.println();
                         if (subscriptions.get(session.getId()).contains(area)) {
-                            System.out.println("Area checked: " + area);
+                            System.out.println("message = " + message);
                             session.getBasicRemote().sendText(this.message);
                         }
                     } catch (IOException e) {

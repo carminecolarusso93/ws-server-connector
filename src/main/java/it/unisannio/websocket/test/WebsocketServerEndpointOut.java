@@ -26,7 +26,7 @@ public class WebsocketServerEndpointOut {
     @OnMessage
     public void onMessage(String message, Session session) {
         manager.setSubscription(session.getId(), new HashSet<String>(Arrays.asList(message)));
-    	System.out.println("[" + this.toString() + "]" + "Message received: " + message);
+//    	System.out.println("[" + this.toString() + "]" + "Message received: " + message);
     }
 
     @OnClose
