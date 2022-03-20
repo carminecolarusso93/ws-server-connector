@@ -113,7 +113,13 @@ public class SessionManager {
 
         @Override
         public void run() {
-            LOGGER.log(Level.INFO, "Adding subscription to: " + this.newSubscritpions.toArray()[0]);
+            Object[] objects = this.newSubscritpions.toArray();
+            StringBuilder sb = new StringBuilder((String) objects[0]);
+            for (int i = 1; i < objects.length-1; i++){
+                sb.append(",");
+                sb.append((String) objects[i]);
+            }
+            LOGGER.log(Level.INFO,"Adding subscription to: " + sb.toString());
             subscriptions.put(sessionId, newSubscritpions);
         }
 
