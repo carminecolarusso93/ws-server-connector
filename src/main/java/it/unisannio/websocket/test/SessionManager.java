@@ -9,12 +9,15 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.websocket.Session;
 
 public class SessionManager {
+    private final Logger LOGGER = Logger.getLogger(SessionManager.class.getName());
     private final Set<Session> inPeers;
     private final Set<Session> outPeers;
     private final Map<String, Set<String>> subscriptions;
@@ -40,6 +43,7 @@ public class SessionManager {
         this.executorServiceIn = Executors.newFixedThreadPool(POOL_SIZE_IN);
         this.executorServiceOut = Executors.newFixedThreadPool(POOL_SIZE_OUT);
         this.subscriptions = new ConcurrentHashMap<String, Set<String>>();
+        LOGGER.log(Level.INFO, "Session Manager Started");
     }
 
     public void addSession(Session session, boolean in) {
@@ -62,7 +66,7 @@ public class SessionManager {
 
     //TODO: the access could be synchronized
     public void broadcast(String message) {
-//        System.out.println("SessionManager.broadcast: message = " + message);
+//        LOGGER.log(Level.INFO, "SessionManager.broadcast: message = " + message);
         this.executorServiceIn.submit(new BroadcastWorker(message));
     }
 
@@ -85,14 +89,8 @@ public class SessionManager {
                 String area = matcher.group(2);
                 for (Session session : outPeers) {
                     try {
-                        System.out.println("area = " + area + ", session.getId() = " + session.getId());
-                        System.out.println("subscriptions: ");
-                        for (String s : subscriptions.get(session.getId())) {
-                            System.out.print(s + ", ");
-                        }
-                        System.out.println();
                         if (subscriptions.get(session.getId()).contains(area)) {
-                            System.out.println("message = " + message);
+                            LOGGER.log(Level.FINE, "Sending to: " + session.getId() + ", message = " + message);
                             session.getBasicRemote().sendText(this.message);
                         }
                     } catch (IOException e) {
@@ -104,7 +102,7 @@ public class SessionManager {
     }
 
     private class SubscriptionWorker implements Runnable {
-
+        private Logger LOGGER = Logger.getAnonymousLogger();
         private String sessionId;
         private Set<String> newSubscritpions;
 
@@ -115,7 +113,7 @@ public class SessionManager {
 
         @Override
         public void run() {
-            System.out.println("Adding subscription to: " + this.newSubscritpions.toArray()[0]);
+            LOGGER.log(Level.INFO, "Adding subscription to: " + this.newSubscritpions.toArray()[0]);
             subscriptions.put(sessionId, newSubscritpions);
         }
 

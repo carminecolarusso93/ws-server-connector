@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -13,11 +15,12 @@ import javax.websocket.server.ServerEndpoint;
 
 @ServerEndpoint(value = "/messages/in")
 public class WebsocketServerEndpointIn {
-	private SessionManager manager = SessionManager.getInstance();
+    private final Logger LOGGER = Logger.getLogger(WebsocketServerEndpointIn.class.getName());
+    private SessionManager manager = SessionManager.getInstance();
 
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println("Session " + session.getId() + " opened.");
+        LOGGER.log(Level.INFO, "Session " + session.getId() + " opened.");
         manager.addSession(session, true);
     }
 
@@ -29,7 +32,7 @@ public class WebsocketServerEndpointIn {
 
     @OnClose
     public void onClose(Session session) throws IOException {
-        System.out.println("Session " + session.getId() + " closed.");
+        LOGGER.log(Level.INFO, "Session " + session.getId() + " closed.");
         manager.removeSession(session, true);
     }
 }
