@@ -29,12 +29,6 @@ public class WebsocketServerEndpointOut {
     public void onMessage(String message, Session session) {
         LOGGER.log(Level.INFO,"message = " + message);
         String[] subscriptions = message.split(",");
-        StringBuilder b = new StringBuilder();
-        for(String s : subscriptions){
-            b.append(s);
-            b.append(", ");
-        }
-        LOGGER.log(Level.INFO,"subscriptions = "+ b.toString());
         manager.setSubscription(session.getId(), new HashSet<String>(Arrays.asList(subscriptions)));
     }
 
