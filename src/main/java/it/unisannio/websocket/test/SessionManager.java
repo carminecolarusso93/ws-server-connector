@@ -115,7 +115,7 @@ public class SessionManager {
         public void run() {
             Object[] objects = this.newSubscritpions.toArray();
             StringBuilder sb = new StringBuilder((String) objects[0]);
-            for (int i = 0; i < objects.length-1; i++){
+            for (int i = 1; i < objects.length; i++){
                 sb.append(",");
                 sb.append((String) objects[i]);
             }
